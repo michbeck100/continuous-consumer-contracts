@@ -21,9 +21,9 @@
     </properties>
 
     <modules>
+        <module>movie-catalog-service</module>
         <module>ratings-data-service</module>
         <module>movie-info-service</module>
-        <module>movie-catalog-service</module>
     </modules>
 
     <dependencies>

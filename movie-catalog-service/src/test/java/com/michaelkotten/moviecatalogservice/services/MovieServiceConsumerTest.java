@@ -42,7 +42,7 @@ class MovieServiceConsumerTest {
                 .path("/movies/100")
                 .willRespondWith()
                 .status(200)
-                .matchHeader(HttpHeaders.CONTENT_TYPE, "content-type: application/json;charset=UTF-8", "application/json")
+                .matchHeader(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8")
                 .body(new PactDslJsonBody()
                         .stringType("movieId", "100")
                         .stringType("name")

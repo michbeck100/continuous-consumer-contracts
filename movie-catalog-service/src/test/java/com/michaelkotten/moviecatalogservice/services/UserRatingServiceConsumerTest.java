@@ -42,7 +42,7 @@ class UserRatingServiceConsumerTest {
                 .path("/ratingsdata/user/100")
                 .willRespondWith()
                 .status(200)
-                .matchHeader(HttpHeaders.CONTENT_TYPE, "content-type: application/json;charset=UTF-8", "application/json")
+                .matchHeader(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8")
                 .body(new PactDslJsonBody()
                         .stringType("userId", "100")
                         .minArrayLike("ratings", 2)
