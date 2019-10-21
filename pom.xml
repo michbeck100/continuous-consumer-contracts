@@ -67,7 +67,7 @@
                         <includes>
                             <include>**/*.java</include>
                         </includes>
-                        <excludedGroups>ConsumerTest,ProviderTest</excludedGroups>
+                        <excludedGroups>IntegrationTest,ConsumerTest,ProviderTest</excludedGroups>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -86,9 +86,7 @@
                         <includes>
                             <include>**/*.java</include>
                         </includes>
-                        <groups>
-                            ConsumerTest
-                        </groups>
+                        <groups>IntegrationTest,ConsumerTest,ProviderTest</groups>
 
                         <systemPropertyVariables>
                             <pactbroker.host>localhost</pactbroker.host>
