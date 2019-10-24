@@ -12,7 +12,7 @@ import com.michaelkotten.ratingsdataservice.RatingsDataServiceApplication;
 
 import au.com.dius.pact.provider.junit.Provider;
 import au.com.dius.pact.provider.junit.State;
-import au.com.dius.pact.provider.junit.loader.PactFolder;
+import au.com.dius.pact.provider.junit.loader.PactBroker;
 import au.com.dius.pact.provider.junit5.HttpTestTarget;
 import au.com.dius.pact.provider.junit5.PactVerificationContext;
 import au.com.dius.pact.provider.junit5.PactVerificationInvocationContextProvider;
@@ -20,11 +20,11 @@ import au.com.dius.pact.provider.junit5.PactVerificationInvocationContextProvide
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {RatingsDataServiceApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@PactBroker
-@PactFolder("../movie-catalog-service/target/pacts")
+@PactBroker(tags = "${pactbroker.tags:prod}")
+//@PactFolder("../movie-catalog-service/target/pacts")
 @Provider("ratings-data-service")
 @ProviderTest
-public class RatingsResourceProviderTest {
+class RatingsResourceProviderTest {
 
     @LocalServerPort
     private int serverPort;
@@ -40,7 +40,7 @@ public class RatingsResourceProviderTest {
         context.verifyInteraction();
     }
 
-    @State({"ratings service contains ratings for user with id = 100"})
+    @State({"ratings service contains ratings for user"})
     public void setupTestdata() {
         // setup test data here
     }

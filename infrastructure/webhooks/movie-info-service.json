@@ -1,0 +1,20 @@
+{
+  "consumer": {
+    "name": "movie-catalog-service"
+  },
+  "provider": {
+    "name": "movie-info-service"
+  },
+  "request": {
+    "method": "POST",
+    "url": "http://jenkins:8080/job/movie-info-service-provider/buildWithParameters?pactConsumerTags=${pactbroker.consumerVersionTags}",
+    "headers": {
+      "Accept": "application/json"
+    }
+  },
+  "events": [
+    {
+      "name": "contract_content_changed"
+    }
+  ]
+}

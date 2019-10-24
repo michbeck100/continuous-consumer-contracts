@@ -2,3 +2,4 @@ target
 .DS_Store
 .idea
 *.iml
+infrastructure/jenkins/jenkins_home

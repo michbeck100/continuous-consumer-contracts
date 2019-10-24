@@ -1,0 +1,58 @@
+#!/usr/bin/env groovy
+pipeline {
+    agent any
+    tools {
+        maven 'Maven'
+    }
+    options {
+        disableConcurrentBuilds()
+    }
+    stages {
+        /*       stage('Build') {
+                   steps {
+                       sh "mvn clean compile compiler:testCompile jar:test-jar  -f movie-info-service/pom.xml"
+                   }
+               }
+               stage('Test') {
+                   steps {
+                       sh "mvn test -f movie-info-service/pom.xml"
+                   }
+               }
+
+               stage('Package') {
+                   steps {
+                       sh "mvn package -DskipTests  -f movie-info-service/pom.xml"
+                   }
+               }
+
+               stage('Integration Test') {
+                   steps {
+                       sh "mvn verify -Pintegration-test  -f movie-info-service/pom.xml"
+                   }
+               }
+       */
+        stage('Provider Test') {
+            steps {
+                sh "mvn verify -Pprovider-test -Dpactbroker.tags=${env.BRANCH_NAME} -Dpact.provider.version=${env.GIT_COMMIT} -Dpact.verifier.publishResults=true -Dpactbroker.host=pact_broker -f movie-info-service/pom.xml"
+            }
+        }
+
+        stage('Deploy') {
+            when {
+                branch 'master'
+            }
+            steps {
+                sh "pact-broker can-i-deploy --broker-base-url http://pact_broker --pacticipant movie-info-service --version ${env.GIT_COMMIT}"
+                echo 'Deploying to prod now...'
+                sh "pact-broker create-version-tag --broker-base-url http://pact_broker --pacticipant movie-info-service --version ${env.GIT_COMMIT} --tag prod"
+            }
+        }
+
+    }
+    post {
+        always {
+            junit testResults: 'target/surefire-reports/*.xml', allowEmptyResults: true
+            junit testResults: 'target/failsafe-reports/*.xml', allowEmptyResults: true
+        }
+    }
+}

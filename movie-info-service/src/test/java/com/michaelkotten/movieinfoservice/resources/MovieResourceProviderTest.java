@@ -12,7 +12,7 @@ import com.michaelkotten.movieinfoservice.ProviderTest;
 
 import au.com.dius.pact.provider.junit.Provider;
 import au.com.dius.pact.provider.junit.State;
-import au.com.dius.pact.provider.junit.loader.PactFolder;
+import au.com.dius.pact.provider.junit.loader.PactBroker;
 import au.com.dius.pact.provider.junit5.HttpTestTarget;
 import au.com.dius.pact.provider.junit5.PactVerificationContext;
 import au.com.dius.pact.provider.junit5.PactVerificationInvocationContextProvider;
@@ -20,8 +20,8 @@ import au.com.dius.pact.provider.junit5.PactVerificationInvocationContextProvide
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {MovieInfoServiceApplication.class},
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@PactBroker
-@PactFolder("../movie-catalog-service/target/pacts")
+@PactBroker(tags = "${pactbroker.tags:prod}")
+//@PactFolder("../movie-catalog-service/target/pacts")
 @Provider("movie-info-service")
 @ProviderTest
 public class MovieResourceProviderTest {
@@ -40,7 +40,7 @@ public class MovieResourceProviderTest {
         context.verifyInteraction();
     }
 
-    @State({"movie service contains movie with id = 100"})
+    @State({"movie service contains movie"})
     public void setupTestdata() {
         // setup test data here
     }

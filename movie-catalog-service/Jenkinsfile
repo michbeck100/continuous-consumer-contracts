@@ -1,0 +1,65 @@
+#!/usr/bin/env groovy
+pipeline {
+    agent any
+    tools {
+        maven 'Maven'
+    }
+    options {
+        disableConcurrentBuilds()
+    }
+    stages {
+/*        stage('Build') {
+            steps {
+                sh "mvn clean compile compiler:testCompile jar:test-jar -f movie-catalog-service/pom.xml"
+            }
+        }
+        stage('Test') {
+            steps {
+                sh "mvn test -f movie-catalog-service/pom.xml"
+            }
+        }
+
+        stage('Package') {
+            steps {
+                sh "mvn package -DskipTests -f movie-catalog-service/pom.xml"
+            }
+        }
+
+        stage('Integration Test') {
+            steps {
+                sh "mvn verify -Pintegration-test -f movie-catalog-service/pom.xml"
+            }
+        }*/
+
+        stage('Consumer Test') {
+            steps {
+                sh "mvn verify -Pconsumer-test -f movie-catalog-service/pom.xml"
+            }
+        }
+
+        stage('Upload consumer contracts') {
+            steps {
+                sh "mvn pact:publish -Dpact.consumer.version=${env.GIT_COMMIT} -Dpact.tag=${env.BRANCH_NAME} -f movie-catalog-service/pom.xml"
+            }
+        }
+
+        stage('Deploy') {
+            when {
+                branch 'master'
+            }
+            steps {
+                echo 'Verify providers...'
+                sh "pact-broker can-i-deploy --broker-base-url http://pact_broker --retry-while-unknown=12 --retry-interval=10 --pacticipant movie-catalog-service --version ${env.GIT_COMMIT} --to prod"
+                echo 'Deploying to prod now...'
+                sh "pact-broker create-version-tag --broker-base-url http://pact_broker --pacticipant movie-catalog-service --version ${env.GIT_COMMIT} --tag prod"
+            }
+        }
+
+    }
+    post {
+        always {
+            junit testResults: 'target/surefire-reports/*.xml', allowEmptyResults: true
+            junit testResults: 'target/failsafe-reports/*.xml', allowEmptyResults: true
+        }
+    }
+}

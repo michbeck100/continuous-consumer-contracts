@@ -1,0 +1,20 @@
+{
+  "consumer": {
+    "name": "movie-catalog-service"
+  },
+  "provider": {
+    "name": "ratings-data-service"
+  },
+  "request": {
+    "method": "POST",
+    "url": "http://jenkins:8080/job/ratings-data-service-provider/buildWithParameters?pactConsumerTags=${pactbroker.consumerVersionTags}",
+    "headers": {
+      "Accept": "application/json"
+    }
+  },
+  "events": [
+    {
+      "name": "contract_content_changed"
+    }
+  ]
+}

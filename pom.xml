@@ -16,6 +16,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <kotlin.version>1.3.50</kotlin.version>
+        <pact-jvm.version>4.0.1</pact-jvm.version>
         <springfox.version>2.9.2</springfox.version>
         <surefire-plugin.version>2.22.2</surefire-plugin.version>
     </properties>
@@ -86,63 +87,90 @@
                         <includes>
                             <include>**/*.java</include>
                         </includes>
-                        <groups>IntegrationTest,ConsumerTest,ProviderTest</groups>
-
-                        <systemPropertyVariables>
-                            <pactbroker.host>localhost</pactbroker.host>
-                            <pactbroker.port>1234</pactbroker.port>
-                            <pactbroker.protocol>http</pactbroker.protocol>
-                            <pactbroker.auth.username>user</pactbroker.auth.username>
-                            <pactbroker.auth.password>user</pactbroker.auth.password>
-                            <pact.provider.version>
-                                ${parsedVersion.majorVersion}.${parsedVersion.minorVersion}.${parsedVersion.incrementalVersion}-${git.commit.id.abbrev}
-                            </pact.provider.version>
-                            <pact.verifier.publishResults>false</pact.verifier.publishResults>
-                        </systemPropertyVariables>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>au.com.dius</groupId>
+                    <artifactId>pact-jvm-provider-maven</artifactId>
+                    <version>${pact-jvm.version}</version>
+                    <configuration>
+                        <pactBrokerUrl>http://pact_broker</pactBrokerUrl>
+                        <projectVersion>${pact.consumer.version}</projectVersion>
+                        <tags>
+                            <tag>${pact.tag}</tag>
+                        </tags>
                     </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <id>get-version</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>parse-version</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>pl.project13.maven</groupId>
-                <artifactId>git-commit-id-plugin</artifactId>
-                <version>2.2.4</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>revision</goal>
-                        </goals>
-                        <phase>validate</phase>
-                    </execution>
-                </executions>
-                <configuration>
-                    <generateGitPropertiesFile>false</generateGitPropertiesFile>
-                    <commitIdGenerationMode>flat</commitIdGenerationMode>
-                    <gitDescribe>
-                        <skip>true</skip>
-                    </gitDescribe>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-            </plugin>
-        </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>integration-test</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <!-- skip unit tests when running integration tests -->
+                            <skip>true</skip>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <groups>IntegrationTest</groups>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>consumer-test</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <!-- skip unit tests when running integration tests -->
+                            <skip>true</skip>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <groups>ConsumerTest</groups>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>provider-test</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <!-- skip unit tests when running integration tests -->
+                            <skip>true</skip>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <groups>ProviderTest</groups>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
