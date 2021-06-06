@@ -11,7 +11,7 @@ Steps:
 - ``cp -r jenkins/jenkins_home_init jenkins/jenkins_home``
 - ``docker-compose up``
 
-You should now be able to access Jenkins on <http://localhost:8080> and the Pact Broker on <http://localhost>.
+You should now be able to access Jenkins on <http://localhost:9091> and the Pact Broker on <http://localhost:9090>.
 
 The Jenkins contains:
 - run-contract-tests job for provider that only executes the contract tests

@@ -49,9 +49,9 @@ pipeline {
             }
             steps {
                 echo 'Verify providers...'
-                sh "pact-broker can-i-deploy --broker-base-url http://pact_broker --retry-while-unknown=12 --retry-interval=10 --pacticipant movie-catalog-service --version ${env.GIT_COMMIT} --to prod"
+                sh "pact-broker can-i-deploy --broker-base-url http://pact_broker:9292 --retry-while-unknown=12 --retry-interval=10 --pacticipant movie-catalog-service --version ${env.GIT_COMMIT} --to prod"
                 echo 'Deploying to prod now...'
-                sh "pact-broker create-version-tag --broker-base-url http://pact_broker --pacticipant movie-catalog-service --version ${env.GIT_COMMIT} --tag prod"
+                sh "pact-broker create-version-tag --broker-base-url http://pact_broker:9292 --pacticipant movie-catalog-service --version ${env.GIT_COMMIT} --tag prod"
             }
         }
 

@@ -35,7 +35,7 @@ pipeline {
 
         stage('Provider Test') {
             steps {
-                sh "mvn verify -Pprovider-test -Dpactbroker.tags=${env.BRANCH_NAME} -Dpact.provider.version=${env.GIT_COMMIT} -Dpact.verifier.publishResults=true -Dpactbroker.host=pact_broker -f ratings-data-service/pom.xml"
+                sh "mvn verify -Pprovider-test -Dpactbroker.tags=${env.BRANCH_NAME} -Dpact.provider.version=${env.GIT_COMMIT} -Dpact.verifier.publishResults=true -Dpactbroker.host=pact_broker:9292 -f ratings-data-service/pom.xml"
             }
         }
 
@@ -44,9 +44,9 @@ pipeline {
                 branch 'master'
             }
             steps {
-                sh "pact-broker can-i-deploy --broker-base-url http://pact_broker --pacticipant ratings-data-service --version ${env.GIT_COMMIT}"
+                sh "pact-broker can-i-deploy --broker-base-url http://pact_broker:9292 --pacticipant ratings-data-service --version ${env.GIT_COMMIT}"
                 echo 'Deploying to prod now...'
-                sh "pact-broker create-version-tag --broker-base-url http://pact_broker --pacticipant ratings-data-service --version ${env.GIT_COMMIT} --tag prod"
+                sh "pact-broker create-version-tag --broker-base-url http://pact_broker:9292 --pacticipant ratings-data-service --version ${env.GIT_COMMIT} --tag prod"
             }
         }
 

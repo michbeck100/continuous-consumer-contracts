@@ -8,7 +8,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>movie-catalog-service</artifactId>
-
+    <name>movie catalog (consumer)</name>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>

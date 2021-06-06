@@ -13,7 +13,7 @@ pipeline {
         stage('Get Latest Prod Version From Pact Broker') {
             steps {
                 script {
-                    env.PROD_VERSION = sh(script: "pact-broker describe-version -a ratings-data-service -b http://pact_broker -l prod | tail -1 | cut -f 1 -d \\|", returnStdout: true).trim()
+                    env.PROD_VERSION = sh(script: "pact-broker describe-version -a ratings-data-service -b http://pact_broker:9292 -l prod | tail -1 | cut -f 1 -d \\|", returnStdout: true).trim()
                 }
                 echo "Current prod version: " + PROD_VERSION
             }
@@ -28,7 +28,7 @@ pipeline {
         stage('Run Contract Tests') {
             steps {
                 dir('ratings-data-service') {
-                    sh "mvn clean verify -Pprovider-test -Dpact.provider.version=${PROD_VERSION} -Dpact.verifier.publishResults=true -Dpactbroker.host=pact_broker -Dpactbroker.tags=prod,${params.pactConsumerTags}"
+                    sh "mvn clean verify -Pprovider-test -Dpact.provider.version=${PROD_VERSION} -Dpact.verifier.publishResults=true -Dpactbroker.host=pact_broker:9292 -Dpactbroker.tags=prod,${params.pactConsumerTags}"
                 }
             }
         }

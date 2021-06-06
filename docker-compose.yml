@@ -1,28 +1,24 @@
 version: "3"
 
 services:
-
   movie-catalog-service:
-    image: movie-catalog-service
     container_name: movie-catalog-service
     build:
       context: movie-catalog-service
     ports:
-      - 8090:80
+      - 8090:8080
       - 5006:5005
   movie-info-service:
-    image: movie-info-service
     container_name: movie-info-service
     build:
       context: movie-info-service
     ports:
-      - 8091:80
+      - 8091:8080
       - 5007:5005
   ratings-data-service:
-    image: ratings-data-service
     container_name: ratings-data-service
     build:
       context: ratings-data-service
     ports:
-      - 8092:80
+      - 8092:8080
       - 5008:5005

@@ -8,6 +8,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <artifactId>ratings-data-service</artifactId>
+    <name>ratings data (provider)</name>
 
     <dependencies>
         <dependency>
