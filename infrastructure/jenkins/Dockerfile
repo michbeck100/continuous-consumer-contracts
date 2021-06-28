@@ -24,4 +24,4 @@ RUN ln -s /pact/bin/pact /usr/local/bin \
 USER jenkins
 
 # Skip initial setup
-ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
+ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false -Dhudson.security.csrf.GlobalCrumbIssuerConfiguration.DISABLE_CSRF_PROTECTION=true

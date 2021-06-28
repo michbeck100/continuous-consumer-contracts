@@ -23,6 +23,7 @@ services:
       PACT_BROKER_DATABASE_HOST: postgres
       PACT_BROKER_DATABASE_NAME: postgres
       PACT_BROKER_WEBHOOK_SCHEME_WHITELIST: http https
+      PACT_BROKER_WEBHOOK_HOST_WHITELIST: jenkins
   jenkins:
     build:
       context: jenkins
@@ -32,6 +33,7 @@ services:
     volumes:
       - "./jenkins/jenkins_home:/var/jenkins_home"
       - "../:/continuous-consumer-contracts"
+      - "~/.m2/repository:/var/jenkins_home/.m2/repository"
 
 volumes:
   jenkins_home:
