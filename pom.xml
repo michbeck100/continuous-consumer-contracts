@@ -4,20 +4,16 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.michaelkotten</groupId>
     <artifactId>continuous-consumer-contracts</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.5.0</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <version>2.6.5</version>
     </parent>
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <kotlin.version>1.3.50</kotlin.version>
-        <pact-jvm.version>4.0.1</pact-jvm.version>
-        <springfox.version>2.9.2</springfox.version>
+        <java.version>17</java.version>
+        <pact-jvm.version>4.0.10</pact-jvm.version>
         <surefire-plugin.version>2.22.2</surefire-plugin.version>
     </properties>
 
@@ -31,7 +27,7 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.5.9</version>
+            <version>1.6.6</version>
         </dependency>
         <!-- Test dependencies -->
         <dependency>

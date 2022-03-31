@@ -2,7 +2,7 @@ version: '3'
 
 services:
   postgres:
-    image: postgres:10.5
+    image: postgres:14
     healthcheck:
       test: psql postgres --command "select 1" -U postgres
     ports:
@@ -11,8 +11,12 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: postgres
+    volumes:
+      - postgres:/var/lib/postgresql/data
   pact_broker:
-    image: pactfoundation/pact-broker:2.79.1.2
+    image: pactfoundation/pact-broker:2.98.0.0
+    depends_on:
+      - postgres
     ports:
       - "9090:9292"
     links:
@@ -31,9 +35,9 @@ services:
       - "9091:8080"
       - "50000:50000"
     volumes:
-      - "./jenkins/jenkins_home:/var/jenkins_home"
-      - "../:/continuous-consumer-contracts"
-      - "~/.m2/repository:/var/jenkins_home/.m2/repository"
+      - ./jenkins/jenkins_home:/var/jenkins_home
+      - ../:/continuous-consumer-contracts
+      - ~/.m2/repository:/var/jenkins_home/.m2/repository
 
 volumes:
-  jenkins_home:
+  postgres:
