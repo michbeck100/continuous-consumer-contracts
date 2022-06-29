@@ -1,9 +1,9 @@
-FROM jenkins/jenkins:jdk17-preview
+FROM jenkins/jenkins:jdk17
 
 ENV TZ="Europe/Berlin"
 
 # Install required plugins
-RUN /usr/local/bin/install-plugins.sh git:4.11.0 blueocean:1.25.3 job-dsl:1.78.3
+RUN /usr/local/bin/install-plugins.sh git:4.11.3 blueocean:1.25.5 job-dsl:1.79
 
 USER root
 
