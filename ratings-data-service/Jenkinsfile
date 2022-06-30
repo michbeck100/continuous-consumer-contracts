@@ -35,7 +35,7 @@ pipeline {
 
         stage('Provider Test') {
             steps {
-                sh "mvn verify -Pprovider-test -Dpactbroker.tags=${env.BRANCH_NAME} -Dpact.provider.version=${env.GIT_COMMIT} -Dpact.verifier.publishResults=true -Dpactbroker.host=pact_broker:9292 -f ratings-data-service/pom.xml"
+                sh "mvn verify -Pprovider-test -Dpactbroker.tags=${env.BRANCH_NAME} -Dpact.provider.version=${env.GIT_COMMIT} -Dpact.verifier.publishResults=true -Dpactbroker.url=http://pact_broker:9292 -f ratings-data-service/pom.xml"
             }
         }
 
