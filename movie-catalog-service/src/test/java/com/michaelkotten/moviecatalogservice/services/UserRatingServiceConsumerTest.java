@@ -10,10 +10,10 @@ import au.com.dius.pact.core.model.annotations.Pact;
 import com.michaelkotten.moviecatalogservice.ConsumerTest;
 import com.michaelkotten.moviecatalogservice.MovieCatalogServiceApplication;
 import com.michaelkotten.moviecatalogservice.models.UserRating;
-import org.apache.http.HttpHeaders;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 
