@@ -28,7 +28,7 @@ pipeline {
         stage('Run Contract Tests') {
             steps {
                 dir('movie-info-service') {
-                    sh "mvn clean verify -Pprovider-test -Dpact.provider.version=${PROD_VERSION} -Dpact.verifier.publishResults=true -Dpactbroker.url=http://pact_broker:9292 -Dpactbroker.tags=prod,${params.pactConsumerTags}"
+                    sh "mvn clean verify -Pprovider-test -Dpact.provider.version=${PROD_VERSION} -Dpact.verifier.publishResults=true -Dpactbroker.url=http://pact_broker:9292 -Dpactbroker.tags=prod,${params.pactConsumerTags.replaceAll('\\s','')}"
                 }
             }
         }
